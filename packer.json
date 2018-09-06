@@ -1,0 +1,27 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "us-west-2",
+    "source_ami": "ami-51537029",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "aws-demo-{{timestamp}}"
+  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./application_http.service",
+      "destination": "/tmp/"
+    },
+    {
+      "type": "shell",
+      "inline":[
+        "sudo apt -y install python",
+        "sudo mv /tmp/application_http.service /etc/systemd/system/",
+        "sudo systemctl daemon-reload",
+        "sudo systemctl enable application_http",
+        "sudo systemctl start application_http"
+      ]
+    }
+  ]
+}

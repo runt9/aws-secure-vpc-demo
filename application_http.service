@@ -1,0 +1,15 @@
+[Unit]
+Description=Application HTTP
+
+[Service]
+Type=idle
+WorkingDirectory=/tmp
+# Minimize attack vector by not running as root
+User=ubuntu
+ExecStart=/usr/bin/python -m SimpleHTTPServer 8000
+TimeoutStopSec=1
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
